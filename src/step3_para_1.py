@@ -34,12 +34,14 @@ def init_process(args):
     def get_init_para_csv(auto_dir,monomer_name):
         init_para_list=[]
         fixed_param_keys = ['a','b','theta','R3','R4']
-        df_params=pd.read_csv('~/Working/step3_para/{}/assets/step2_result.csv'.format(monomer_name))
+        df_params=pd.read_csv('~/Working/step3_para/{}/assets/step2_result_params.csv'.format(monomer_name))
         for index in df_params.index:
             params_dict = df_params.loc[index,fixed_param_keys].to_dict()
             a_ = params_dict['a']; b_ = params_dict['b']
             R3 = params_dict['R3']; R4 = params_dict['R4']; theta = params_dict['theta']
             if (-1 > R3) or (-1 > R4):
+                continue
+            if (R3 > 3.9) or (R4 > 3.9):
                 continue
             init_params_csv = os.path.join(auto_dir, 'step3_para_init_params.csv')
             z_2dlist=get_c_vec_vdw(monomer_name,R3,R4,a_,b_,theta)##z_2dlistでは後ろでRcの極小を得るために正負反転したものを出力
