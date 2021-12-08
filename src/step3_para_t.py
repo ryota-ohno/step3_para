@@ -15,7 +15,7 @@ import random
 INTERACTION_PATH = os.path.join(os.environ['HOME'],'Working/interlayer_interaction/')
 sys.path.append(INTERACTION_PATH)
 
-from make_para import exec_gjf
+from make_para_t import exec_gjf
 from step3_para_vdw import get_c_vec_vdw
 from step3_para_vdw import detect_peaks
 from utils import get_E
@@ -213,7 +213,7 @@ def get_params_dict(auto_dir, num_nodes, fixed_param_keys, opt_param_keys):
         
 def get_opt_params_dict(df_cur, init_params_dict,fixed_params_dict):
     df_val = filter_df(df_cur, fixed_params_dict)
-    cx_init_prev = init_params_dict['cx']; cy_init_prev = init_params_dict['cy']; cz_init_prev = init_params_dict['cz']
+    cx_init_prev = init_params_dict['cx']; cy_init_prev = init_params_dict['cy']; cz_init_prev = init_params_dict['cz']; A2 = init_params_dict['A2']
     
     while True:
         E_list=[];cxyz_list=[]
@@ -222,7 +222,7 @@ def get_opt_params_dict(df_cur, init_params_dict,fixed_params_dict):
                  for cz in [cz_init_prev-0.1,cz_init_prev,cz_init_prev+0.1]:  
                     cx = np.round(cx,1);cy = np.round(cy,1);cz= np.round(cz,1)
                     df_val_cxyz = df_val[
-                    (df_val['cx']==cx)&(df_val['cy']==cy)&(df_val['cz']==cz)
+                    (df_val['cx']==cx)&(df_val['cy']==cy)&(df_val['cz']==cz)&(df_val['A2']==A2)
                     &(df_val['status']=='Done')
                        ]
                     if len(df_val_cxyz)==0:
