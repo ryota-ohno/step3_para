@@ -146,7 +146,7 @@ def listen(args):
             
             E = 2*((Ei01+Eip1+Eip2+Ei02+Eip3+Eip4)/2+Eit1+Eit2+Eit3+Eit4)+2*(Ep+Et1+Et2)##隣接20分子　2パターン
             #### TODO
-            df_E.loc[idx, ['E_p','E_t1','E_t2','E_i01','E_ip1','E_ip2','E_it1','E_it2','E_it3','E_it4','E_i02','E_ip3','E_ip4','E','status']] = [Et1,Et2,Ei01,Eip1,Eip2,Eit1,Eit2,Eit3,Eit4,Ei02,Eip3,Eip4,E,'Done']
+            df_E.loc[idx, ['E_p','E_t1','E_t2','E_i01','E_ip1','E_ip2','E_it1','E_it2','E_it3','E_it4','E_i02','E_ip3','E_ip4','E','status']] = [Ep,Et1,Et2,Ei01,Eip1,Eip2,Eit1,Eit2,Eit3,Eit4,Ei02,Eip3,Eip4,E,'Done']
             df_E.to_csv(auto_csv,index=False)
             break#2つ同時に計算終わったりしたらまずいので一個で切る
     isAvailable = len_queue < num_nodes 
