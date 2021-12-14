@@ -86,7 +86,7 @@ def main_process(args):
     os.makedirs(os.path.join(auto_dir,'gaussview'), exist_ok=True)
     auto_csv_path = os.path.join(auto_dir,'step3_para.csv')
     if not os.path.exists(auto_csv_path):        
-        df_E = pd.DataFrame(columns = ['cx','cy','cz','A2','a','b','theta','R3','R4','E','E_t1','E_t2','E_i01','E_i02','E_ip1','E_ip2','E_ip3','E_ip4','E_it1','E_it2','E_it3','E_it4','machine_type','status','file_name'])##いじる
+        df_E = pd.DataFrame(columns = ['cx','cy','cz','A2','a','b','theta','R3','R4','E','E_i01','E_i02','E_ip1','E_ip2','E_ip3','E_ip4','E_it1','E_it2','E_it3','E_it4','machine_type','status','file_name'])##いじる
         df_E.to_csv(auto_csv_path,index=False)##step3を二段階でやる場合二段階目ではinitをやらないので念のためmainにも組み込んでおく
     
     os.chdir(os.path.join(args.auto_dir,'gaussian'))
