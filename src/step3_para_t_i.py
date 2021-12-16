@@ -16,7 +16,7 @@ import random
 INTERACTION_PATH = os.path.join(os.environ['HOME'],'Working/interlayer_interaction/')
 sys.path.append(INTERACTION_PATH)
 
-from make_para_t import exec_gjf
+from make_para_t_i import exec_gjf
 from step3_para_vdw import get_c_vec_vdw
 from step3_para_vdw import detect_peaks
 from utils import get_E
