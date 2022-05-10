@@ -9,7 +9,7 @@ MONOMER_LIST = ["BTBT","naphthalene","anthracene","tetracene","pentacene","hexac
 ############################汎用関数###########################
 def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/{}/assets/monomer.csv'.format(monomer_name))
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer.csv'.format(monomer_name))
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
@@ -71,7 +71,7 @@ def get_monomer_xyzR(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
 
 def get_monomer_xyzR_(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):##space inversionしたものを上層として使う際に使用
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/{}/assets/monomer.csv'.format(monomer_name))
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer.csv'.format(monomer_name))
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
@@ -260,7 +260,8 @@ def make_gaussview_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlay
 
 def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):##R3:t-shaped R4:slipped-parallel
     a_ = params_dict['a']; b_ = params_dict['b']; c = np.array([params_dict['cx'],params_dict['cy'],params_dict['cz']])
-    R3 = 0; R4 =0; A1 = params_dict['A1']; A2 = params_dict['A2']; A3 = params_dict['theta']
+    R3 = params_dict['R3']; R4 =params_dict['R4']
+    A1 = params_dict['A1']; A2 = params_dict['A2']; A3 = params_dict['theta']
     phi1 = params_dict.get('phi1',0.0); phi2 = -phi1
     #print(phi1, phi2)
     ##平行配置をA2傾けてT字を-A2傾ける　この時A2は負の値をとる
@@ -332,9 +333,9 @@ def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):##
     line_list_dimer_it3 = get_xyzR_lines(dimer_array_it3,file_description+'_it3')
     line_list_dimer_it4 = get_xyzR_lines(dimer_array_it4,file_description+'_it4')
 
-    if monomer_name in MONOMER_LIST and not(isInterlayer):##隣接8分子について対称性より3分子でエネルギー計算
-        gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_t1 + ['\n\n--Link1--\n'] + line_list_dimer_p1 + ['\n\n--Link1--\n'] + ['\n\n\n']
-    elif monomer_name in MONOMER_LIST and isInterlayer:
+    #if monomer_name in MONOMER_LIST and not(isInterlayer):##隣接8分子について対称性より3分子でエネルギー計算
+    #    gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_t1 + ['\n\n--Link1--\n'] + line_list_dimer_p1 + ['\n\n--Link1--\n'] + ['\n\n\n']
+    if monomer_name in MONOMER_LIST:# and isInterlayer:
         gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_i01 + ['\n\n--Link1--\n'] + line_list_dimer_ip1+ ['\n\n--Link1--\n'] + line_list_dimer_ip2 + ['\n\n--Link1--\n'] + line_list_dimer_it1 + ['\n\n--Link1--\n'] + line_list_dimer_it2 + ['\n\n--Link1--\n'] + line_list_dimer_it3 + ['\n\n--Link1--\n'] + line_list_dimer_it4 + ['\n\n--Link1--\n'] + line_list_dimer_i02 + ['\n\n--Link1--\n'] + line_list_dimer_ip3+ ['\n\n--Link1--\n'] + line_list_dimer_ip4  + ['\n\n\n']##2層目9分子
     elif monomer_name=='mono-C9-BTBT':##tshaped ４分子を全て計算
         gij_xyz_lines = ['$ RunGauss\n'] + line_list_dimer_i01 + ['\n\n--Link1--\n'] + line_list_dimer_ip1+ ['\n\n--Link1--\n'] + line_list_dimer_ip2 + ['\n\n--Link1--\n'] + line_list_dimer_it1 + ['\n\n--Link1--\n'] + line_list_dimer_it2 + ['\n\n--Link1--\n'] + line_list_dimer_it3 + ['\n\n--Link1--\n'] + line_list_dimer_it4 + ['\n\n--Link1--\n'] + line_list_dimer_i02 + ['\n\n--Link1--\n'] + line_list_dimer_ip3+ ['\n\n--Link1--\n'] + line_list_dimer_ip4  + ['\n\n\n']##2層目9分子
@@ -351,7 +352,7 @@ def get_file_name_from_dict(monomer_name,paras_dict):
     file_name = ''
     file_name += monomer_name
     for key,val in paras_dict.items():
-        if key in ['a','b','cx','cy','cz','theta','R3','R4']:
+        if key in ['a','b','cx','cy','cz','theta','R3','R4','phi']:
             val = np.round(val,2)
         elif key in ['A1','A2']:#,'theta']:
             val = int(val)

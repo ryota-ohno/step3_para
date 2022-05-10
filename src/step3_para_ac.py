@@ -87,7 +87,7 @@ def main_process(args):
     os.makedirs(os.path.join(auto_dir,'gaussview'), exist_ok=True)
     auto_csv_path = os.path.join(auto_dir,'step3_para.csv')
     if not os.path.exists(auto_csv_path):        
-        df_E = pd.DataFrame(columns = ['cz','cx','cy','a','b','theta','E','E_i01','E_i02','E_ip1','E_ip2','E_ip3','E_ip4','E_it1','E_it2','E_it3','E_it4','machine_type','status','file_name'])##いじる
+        df_E = pd.DataFrame(columns = ['cz','cx','cy','a','b','theta','R3','R4','phi','E','E_i01','E_i02','E_ip1','E_ip2','E_ip3','E_ip4','E_it1','E_it2','E_it3','E_it4','machine_type','status','file_name'])##いじる
         df_E.to_csv(auto_csv_path,index=False)##step3を二段階でやる場合二段階目ではinitをやらないので念のためmainにも組み込んでおく
 
     os.chdir(os.path.join(args.auto_dir,'gaussian'))
@@ -104,15 +104,15 @@ def listen(args):
     isTest = args.isTest
     ##isInterlayer =args.isInterlayer
     #### TODO
-    fixed_param_keys = ['a','b','theta','A1','A2','cy']
-    opt_param_keys = ['cx','cz']
+    fixed_param_keys = ['a','b','theta','A1','A2']
+    opt_param_keys = ['cx','cy','cz']
 
     auto_csv = os.path.join(auto_dir,'step3_para.csv')
     df_E = pd.read_csv(auto_csv)
     df_queue = df_E.loc[df_E['status']=='InProgress',['machine_type','file_name']]
     machine_type_list = df_queue['machine_type'].values.tolist()
     len_queue = len(df_queue)
-    maxnum_machine2 = 2#num_nodes/2 if num_nodes%2==0 else (num_nodes+1)/2##適宜変える
+    maxnum_machine2 = 1#num_nodes/2 if num_nodes%2==0 else (num_nodes+1)/2##適宜変える
     
     for idx,row in zip(df_queue.index,df_queue.values):
         machine_type,file_name = row
@@ -125,7 +125,7 @@ def listen(args):
         else:##エネルギーの内訳全般
             len_queue-=1;machine_type_list.remove(machine_type)
             Ei01=float(E_list[0]);Eip1=float(E_list[1]);Eip2=float(E_list[2]);Eit1=float(E_list[3]);Eit2=float(E_list[4]);Eit3=float(E_list[5]);Eit4=float(E_list[6]);Ei02=float(E_list[7]);Eip3=float(E_list[8]);Eip4=float(E_list[9])##ここも計算する分子数に合わせて調整
-            E = 2*((Ei01+Eip1+Eip2+Ei02+Eip3+Eip4)/2+Eit1+Eit2+Eit3+Eit4)##隣接20分子　2パターン
+            E = ((Ei01+Eip1+Eip2+Ei02+Eip3+Eip4)/2+Eit1+Eit2+Eit3+Eit4)##隣接20分子　2パターン
             #### TODO
             df_E.loc[idx, ['E_i01','E_ip1','E_ip2','E_it1','E_it2','E_it3','E_it4','E_i02','E_ip3','E_ip4','E','status']] = [Ei01,Eip1,Eip2,Eit1,Eit2,Eit3,Eit4,Ei02,Eip3,Eip4,E,'Done']
             df_E.to_csv(auto_csv,index=False)
@@ -214,25 +214,26 @@ def get_params_dict(auto_dir, num_nodes, fixed_param_keys, opt_param_keys):
         
 def get_opt_params_dict(df_cur, init_params_dict,fixed_params_dict):
     df_val = filter_df(df_cur, fixed_params_dict)
-    cx_init_prev = init_params_dict['cx']; cz_init_prev = init_params_dict['cz'];cy = init_params_dict['cy']
+    cx_init_prev = init_params_dict['cx']; cz_init_prev = init_params_dict['cz'];cy_init_prev = init_params_dict['cy']
     
     while True:
         E_list=[];params_list=[]
         for cx in [cx_init_prev-0.1,cx_init_prev,cx_init_prev+0.1]:
-            for cz in [cz_init_prev-0.1,cz_init_prev,cz_init_prev+0.1]:  
-                cy = np.round(cy,1);cx = np.round(cx,1);cz= np.round(cz,1)
-                df_val_params = df_val[
-                (df_val['cy']==cy)&(df_val['cx']==cx)&(df_val['cz']==cz)
-                &(df_val['status']=='Done')
-                   ]
-                if len(df_val_params)==0:
-                    return False,{'cx':cx,'cz':cz}
-                params_list.append([cx,cz]);E_list.append(df_val_params['E'].values[0])
-        cx_init,cz_init = params_list[np.argmin(np.array(E_list))]
-        if cx_init==cx_init_prev and cz_init==cz_init_prev:
-            return True,{'cx':cx_init, 'cz':cz_init}
+            for cy in [cy_init_prev-0.1,cy_init_prev,cy_init_prev+0.1]:
+                for cz in [cz_init_prev-0.1,cz_init_prev,cz_init_prev+0.1]:  
+                    cy = np.round(cy,1);cx = np.round(cx,1);cz= np.round(cz,1)
+                    df_val_params = df_val[
+                    (df_val['cy']==cy)&(df_val['cx']==cx)&(df_val['cz']==cz)
+                    &(df_val['status']=='Done')
+                       ]
+                    if len(df_val_params)==0:
+                        return False,{'cx':cx,'cy':cy,'cz':cz}
+                    params_list.append([cx,cy,cz]);E_list.append(df_val_params['E'].values[0])
+        cx_init,cy_init,cz_init = params_list[np.argmin(np.array(E_list))]
+        if cx_init==cx_init_prev and cy_init==cy_init_prev and cz_init==cz_init_prev:
+            return True,{'cx':cx_init, 'cy':cy_init, 'cz':cz_init}
         else:
-            cx_init_prev=cx_init;cz_init_prev=cz_init
+            cx_init_prev=cx_init;cy_init_prev=cy_init;cz_init_prev=cz_init
     
 def get_values_from_df(df,index,key):
     return df.loc[index,key]
