@@ -247,9 +247,12 @@ def filter_df(df, dict_filter):
     for k, v in dict_filter.items():
         if type(v)==str:
             query.append('{} == "{}"'.format(k,v))
+            df=df[df[k]==v]
         else:
             query.append('{} == {}'.format(k,v))
-    df_filtered = df.query(' and '.join(query))
+            df=df[df[k]==v]
+    query0=' and '.join(query)
+    df_filtered=df
     return df_filtered
 
 if __name__ == '__main__':
