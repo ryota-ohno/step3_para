@@ -261,7 +261,7 @@ def make_gaussview_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlay
 def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):##R3:t-shaped R4:slipped-parallel
     a_ = params_dict['a']; b_ = params_dict['b']; c = np.array([params_dict['cx'],params_dict['cy'],params_dict['cz']])
     R3 = params_dict['R3']; R4 =params_dict['R4']
-    A1 = params_dict['A1']; A2 = params_dict['A2']; A3 = params_dict['theta']
+    A1 = 0; A2 = 0; A3 = params_dict['theta']
     phi1 = params_dict.get('phi1',0.0); phi2 = -phi1
     #print(phi1, phi2)
     ##平行配置をA2傾けてT字を-A2傾ける　この時A2は負の値をとる
