@@ -104,7 +104,7 @@ def listen(args):
     isTest = args.isTest
     ##isInterlayer =args.isInterlayer
     #### TODO
-    fixed_param_keys = ['a','b','theta','A1','A2']
+    fixed_param_keys = ['a','b','theta','R3','R4']
     opt_param_keys = ['cx','cy','cz']
 
     auto_csv = os.path.join(auto_dir,'step3_para.csv')

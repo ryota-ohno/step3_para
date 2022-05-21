@@ -276,7 +276,7 @@ def make_gjf_xyz(auto_dir,monomer_name,params_dict,machine_type,isInterlayer):##
         monomer_array_ip1 = get_monomer_xyzR_(monomer_name,c[0]+a_,c[1],c[2]+2*R3-R4,A1,A2,A3, phi1)
         monomer_array_ip2 = get_monomer_xyzR_(monomer_name,c[0]-a_,c[1],c[2]-(2*R3-R4),A1,A2,A3, phi1)
     
-    monomer_array_c2 = get_monomer_xyzR(monomer_name,0,0,0,0,0,-A3, phi1)##centerのc 角度-A3
+    monomer_array_c2 = get_monomer_xyzR(monomer_name,0,0,0,-A1,A2,-A3, phi1)##centerのc 角度-A3
     monomer_array_i02 = get_monomer_xyzR_(monomer_name,c[0],c[1],c[2],-A1,A2,-A3, phi2)
     if a_ > b_:
         monomer_array_ip3 = get_monomer_xyzR_(monomer_name,c[0],c[1]+b_,c[2]+R4,-A1,A2,-A3, phi2)
