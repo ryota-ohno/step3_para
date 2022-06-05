@@ -10,7 +10,7 @@ MONOMER_LIST = ["BTBT","naphthalene","anthracene","tetracene","pentacene","hexac
 ############################汎用関数###########################
 def get_monomer_xyzR3(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer_3.csv'.format(monomer_name))###結晶構造準拠
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/monomer_3.csv'.format(monomer_name))###結晶構造準拠
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
@@ -50,7 +50,7 @@ def get_monomer_xyzR3(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
         raise RuntimeError('invalid monomer_name={}'.format(monomer_name))
 def get_monomer_xyzR3_(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer_3.csv'.format(monomer_name))###結晶構造準拠
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/monomer_3.csv'.format(monomer_name))###結晶構造準拠
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
@@ -91,7 +91,7 @@ def get_monomer_xyzR3_(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):
 
 def get_monomer_xyzR4(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):##space inversionしたものを上層として使う際に使用
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer_4.csv'.format(monomer_name))
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/monomer_4.csv'.format(monomer_name))
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
@@ -131,7 +131,7 @@ def get_monomer_xyzR4(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):##space inv
         raise RuntimeError('invalid monomer_name={}'.format(monomer_name))
 def get_monomer_xyzR4_(monomer_name,Ta,Tb,Tc,A1,A2,A3,phi,isFF=False):##space inversionしたものを上層として使う際に使用
     T_vec = np.array([Ta,Tb,Tc])
-    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/assets/monomer_4.csv'.format(monomer_name))
+    df_mono=pd.read_csv('~/Working/step3_para/monomer/{}/monomer_4.csv'.format(monomer_name))
     atoms_array_xyzR=df_mono[['X','Y','Z','R']].values
     
     ex = np.array([1.,0.,0.]); ey = np.array([0.,1.,0.]); ez = np.array([0.,0.,1.])
