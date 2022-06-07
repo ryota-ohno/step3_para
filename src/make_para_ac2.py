@@ -397,7 +397,7 @@ def get_file_name_from_dict(monomer_name,paras_dict):
     file_name = ''
     file_name += monomer_name
     for key,val in paras_dict.items():
-        if key in ['a','b','cx','cy','cz','theta','R3','R4','phi']:
+        if key in ['a','b','cx','cy','cz','theta','R3','R4','phi1','phi2']:
             val = np.round(val,2)
         elif key in ['A1','A2']:#,'theta']:
             val = int(val)
